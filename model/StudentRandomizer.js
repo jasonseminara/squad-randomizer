@@ -1,5 +1,6 @@
+const InvalidConfiguration = require('./InvalidConfiguration');
 const BadSquadConfig = require('./BadSquadConfig');
-const Squads = require('./Squads');
+const makeSquads = require('./makeSquads');
 
 class StudentRandomizer {
   constructor(f = 0) {
@@ -16,8 +17,12 @@ class StudentRandomizer {
     do {
       this.failures = 0;
       attempts += 1;
+
+      // check to see if we've gone crazy.
+      if (attempts > 1000) throw new InvalidConfiguration();
+
       try {
-        results = new Squads(s, l, r).randomize();
+        results = makeSquads(s, l, r);
       } catch (e) {
         if (!(e instanceof BadSquadConfig)) {
           throw e;

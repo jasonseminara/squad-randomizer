@@ -1,9 +1,10 @@
 const BadSquadConfig = require('./BadSquadConfig');
 
 class InstructorChoice {
-  constructor(leadCount, maxCount) {
+  constructor(leadCount, maxCount, allowRepeats) {
     this.leadCount = leadCount;
     this.leads = new Array(leadCount).fill(maxCount);
+    this.allowRepeats = allowRepeats;
   }
 
   use(pos) {
@@ -27,7 +28,8 @@ class InstructorChoice {
     // console.log('getValidToken', student, n, id)
     if (n > 100) throw new BadSquadConfig();
 
-    if (!student.includes(id)) {
+    // if I disallow repeats and find a repeat, stop the presses!
+    if (this.allowRepeats || !student.includes(id)) {
       this.use(id);
       return id;
     }
